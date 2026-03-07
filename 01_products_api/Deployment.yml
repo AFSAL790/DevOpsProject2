@@ -16,7 +16,7 @@ spec:
   spec:
     containers:
     - name: productscontainer
-      image: afsal790/products
+      image: afsal790/products_api
       ports:
       - containerPort: 8080
 ---
@@ -32,4 +32,5 @@ spec:
    - port: 80
      targetPort: 8080
 ...
+
 
