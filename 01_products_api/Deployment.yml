@@ -20,7 +20,7 @@ spec:
 
         env:
         - name: SPRING_DATASOURCE_URL
-          value: "jdbc:mysql://database-1.clsuuoy8ym73.ap-south-1.rds.amazonaws.com:3306/ecommerce?useSSL=false&serverTimezone=UTC"
+          value: "jdbc:mysql://database-2.ckdi4iwsu5tl.us-east-1.rds.amazonaws.com:3306/ecommerce?useSSL=false&serverTimezone=UTC"
 
         - name: SPRING_DATASOURCE_USERNAME
           valueFrom:
