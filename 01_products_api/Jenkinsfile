@@ -6,34 +6,42 @@ pipeline {
     }    
 
     stages {
+
         stage('Git Clone') {
             steps {
                git branch: 'main', url: 'https://github.com/AFSAL790/DevOpsProject2.git'
             }
         }
+
         stage('Maven Build'){
             steps{
-             sh 'mvn clean package'
+                dir('01_products_api'){
+                    sh 'mvn clean package -DskipTests'
+                }
             }
         }
+
         stage('Docker Image'){
             steps{
-             sh 'docker build -t afsal790/products_api .'
+                dir('01_products_api'){
+                    sh 'docker build -t afsal790/products_api .'
+                }
             }
         }
-        stage('Docker Image push'){
-            steps
-            withCredentials([string(credentialsId: 'docker_pwd', variable: 'docker_pwd')]) {
+
+        stage('Docker Push'){
+            steps{
+                withCredentials([string(credentialsId: 'docker_pwd', variable: 'docker_pwd')]) {
                    sh 'docker login -u afsal790 -p ${docker_pwd}'
                    sh 'docker push afsal790/products_api'
-            }
+                }
             }
         }
-        stage('k8s deployment'){
+
+        stage('Kubernetes Deploy'){
             steps{
-             sh 'kubectl apply -f Deployment.yml'
+                sh 'kubectl apply -f Deployment.yml'
             }
-        }        
+        }
     }
 }
-
