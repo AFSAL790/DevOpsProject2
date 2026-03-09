@@ -29,18 +29,20 @@ pipeline {
             }
         }
 
-        stage('Docker Push'){
+        stage('Docker Image push'){
             steps{
-                withCredentials([string(credentialsId: 'docker_pwd', variable: 'docker_pwd')]) {
-                   sh 'docker login -u afsal790 -p ${docker_pwd}'
-                   sh 'docker push afsal790/products_api'
+                withCredentials([usernamePassword(credentialsId: 'docker_pwd', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh 'docker login -u $DOCKER_USER -p $DOCKER_PASS'
+                    sh 'docker push afsal790/products_api'
                 }
             }
         }
 
-        stage('Kubernetes Deploy'){
+        stage('k8s deployment'){
             steps{
-                sh 'kubectl apply -f Deployment.yml'
+                dir('01_products_api'){
+                    sh 'kubectl apply -f Deployment.yml'
+                }
             }
         }
     }
